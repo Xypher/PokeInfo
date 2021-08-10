@@ -1,6 +1,6 @@
 import React from "react";
 
-const Abilities = ({ abilities }) => {
+const PokeAbilities = ({ abilities }) => {
   //if no abilities are yet fetched return nothing
   if (!abilities) {
     return <div></div>;
@@ -35,4 +35,4 @@ const Abilities = ({ abilities }) => {
   );
 };
 
-export default Abilities;
+export default PokeAbilities;

@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { Component } from "react";
-import PokeCard from "./PokeCard";
+import PokeCard from "../pokemon/PokeCard";
 
-class PokeDeck extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -109,4 +109,4 @@ class PokeDeck extends Component {
   }
 }
 
-export default PokeDeck;
+export default Main;

@@ -2,12 +2,7 @@
   text-align: center;
 }
 
-.pokemon-card-img {
-  width: "300px";
-  height: "auto";
-}
-
-.pokemon-card-spinner {
-  width: 4rem;
-  height: 4rem;
+.pokemon-deck-spinner {
+  width: 3rem;
+  height: 3rem;
 }

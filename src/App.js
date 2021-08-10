@@ -1,10 +1,11 @@
 import "./App.css";
-import Main from "./components/page/Main";
+import Search from "./components/page/Search";
+import PokeDeck from "./components/pokemon/PokeDeck";
 
 function App() {
   return (
     <div className="App">
-      <Main />
+      <PokeDeck />
     </div>
   );
 }

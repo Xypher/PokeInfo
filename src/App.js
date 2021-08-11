@@ -3,7 +3,7 @@ import Main from "./components/page/Main";
 import Details from "./components/page/Details";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import React, { Component } from "react";
-import { load } from "./actions/pokemon";
+import { load } from "./actions/pokemons";
 import { connect } from "react-redux";
 
 class App extends Component {
@@ -23,4 +23,9 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  loading: state.pokemons.loading,
+  pokemonForDetails: state.pokemons.pokemonForDetails,
+});
+
+export default connect(mapStateToProps, { load })(App);

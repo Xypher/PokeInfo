@@ -5,7 +5,7 @@ import {
   SPECIFY_POKEMON_DETAILS,
 } from "./actionTypes";
 
-export async function load(dispatch) {
+export const load = () => async (dispatch) => {
   dispatch({ type: POKEMONS_LOADING });
   const baseUrl = "https://pokeapi.co/api/v2/pokemon";
   const result = await axios.get(`${baseUrl}/?limit=2000`);
@@ -21,7 +21,7 @@ export async function load(dispatch) {
   );
   pokemons = pokemons.map((pokemon) => pokemon.data);
   dispatch({ type: POKEMONS_LOADED, payload: pokemons });
-}
+};
 
 export const specify = (pokemon) => (dispatch) =>
   dispatch({ type: SPECIFY_POKEMON_DETAILS, payload: pokemon });

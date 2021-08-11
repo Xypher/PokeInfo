@@ -1,42 +1,52 @@
-import axios from "axios";
 import React, { Component } from "react";
 import PokeCard from "../pokemon/PokeCard";
+import { connect } from "react-redux";
+import { specify } from "../../actions/pokemons";
+import PokeDeck from "../pokemon/PokeDeck";
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.queryPokemons = this.queryPokemons.bind(this);
   }
 
   state = {
-    pokemons: null,
     name: "",
+    queryLoading: false,
+    pokeCards: [],
+    limit: 8,
   };
 
-  async componentDidMount() {
-    const baseUrl = "https://pokeapi.co/api/v2/pokemon";
-    const result = await axios.get(`${baseUrl}/?limit=2000`);
+  queryPokemons() {
+    const { pokemons } = this.props;
+    const { name, limit } = this.state;
 
-    let pokemons = result.data.results.sort((a, b) => {
-      if (a.name < b.name) return -1;
-      else if (a.name > b.name) return 1;
-      else return 0;
-    });
-
-    pokemons = await Promise.all(
-      pokemons.map((pokemon) => axios.get(pokemon.url))
+    let pokeCards = pokemons.filter((pokemon) =>
+      pokemon.name.replace(/-/g, " ").startsWith(name.trim())
     );
-    pokemons = pokemons.map((pokemon) => pokemon.data);
-    this.setState({ pokemons });
+    pokeCards = pokeCards.slice(0, Math.min(pokeCards.length, limit));
+    this.setState({ queryLoading: false, pokeCards });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.pokemonsLoading && !this.props.pokemonsLoading) {
+      this.setState({ queryLoading: true, pokeCards: [] }, this.queryPokemons);
+    }
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState(
+      { [event.target.name]: event.target.value },
+      this.queryPokemons
+    );
   }
 
   render() {
-    let { pokemons = null, name } = this.state;
-    if (!pokemons)
+    let { queryLoading, pokeCards } = this.state;
+    let { pokemonsLoading } = this.props;
+
+    if (pokemonsLoading || queryLoading)
       return (
         <div className="container">
           <div className="row mt-5">
@@ -51,37 +61,6 @@ class Main extends Component {
           </div>
         </div>
       );
-
-    let pokeCards = pokemons
-      .filter((pokemon) =>
-        pokemon.name.replace(/-/g, " ").startsWith(name.trim())
-      )
-      .map((pokemon, key) => <PokeCard key={key} pokemon={pokemon} />);
-
-    pokeCards =
-      pokeCards.length !== 0 ? (
-        pokeCards
-      ) : (
-        <div className="row mt-5">
-          <div className="col-12">
-            <h1>No Results</h1>
-            <p className="text-muted">Check for misspelling errors.</p>
-          </div>
-        </div>
-      );
-
-    if (pokeCards.length === 0) {
-      return (
-        <div className="container">
-          <div className="row mt-5">
-            <div className="col-12">
-              <h1>No Results</h1>
-              <p className="text-muted">Check for misspelling errors.</p>
-            </div>
-          </div>
-        </div>
-      );
-    }
 
     return (
       <div className="container mt-4">
@@ -98,15 +77,15 @@ class Main extends Component {
             />
           </div>
         </form>
-
-        <div className="row mt-4">
-          <div className="col-12">
-            <div className="container">{pokeCards}</div>
-          </div>
-        </div>
+        <PokeDeck pokeCards={pokeCards} />
       </div>
     );
   }
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+  pokemonsLoading: state.pokemons.loading,
+  pokemons: state.pokemons.pokemons,
+});
+
+export default connect(mapStateToProps, { specify })(Main);

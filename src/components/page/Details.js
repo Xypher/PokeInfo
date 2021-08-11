@@ -1,30 +1,48 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import PokeAbilities from "../pokemon/Abilites";
+import PokeAbilities from "../pokemon/PokeAbilities";
 import PokeCard from "../pokemon/PokeCard";
+import { connect } from "react-redux";
 
 class Details extends Component {
   state = {
-    abilites: null,
+    abilities: null,
+    loading: true,
   };
 
   async componentDidMount() {
-    let abilites = await axios.get(this.props.pokemon.url);
-    abilites = abilites.map((ability) => ability.data);
-    this.setState({ abilites });
+    this.setState({ loading: true });
+
+    let { pokemonForDetails } = this.props;
+    let abilities = await Promise.all(
+      pokemonForDetails.abilities.map(({ ability }) => axios.get(ability.url))
+    );
+    abilities = abilities.map((ability) => ability.data);
+
+    this.setState({ abilities, loading: false });
   }
 
   render() {
+    const { abilities, loading } = this.state;
+    const { pokemonForDetails } = this.props;
+    if (loading) return <h1>loading...</h1>;
+    console.log(abilities);
     return (
       <div className="container">
-        <div className="row mt-4">
-          <PokeCard pokemon={this.props.pokemon} />
+        <div className="row mt-4 mb-4">
+          <PokeCard pokemon={pokemonForDetails} />
         </div>
-        <PokeAbilities abilities={this.state.abilites} />
+        <div className="row">
+          <PokeAbilities abilities={abilities} />
+        </div>
       </div>
     );
   }
 }
 
-export default withRouter(Details);
+const mapStateToProps = (state) => ({
+  pokemonForDetails: state.pokemons.pokemonForDetails,
+});
+
+export default connect(mapStateToProps)(withRouter(Details));

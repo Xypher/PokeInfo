@@ -5,7 +5,7 @@ const PokeAbilities = ({ abilities }) => {
   if (!abilities) {
     return <div></div>;
   }
-  const rows = abilities.map((ability) => {
+  const rows = abilities.map((ability, key) => {
     const name = ability.names.filter((name) => name.language.name === "en")[0]
       .name;
 
@@ -18,7 +18,7 @@ const PokeAbilities = ({ abilities }) => {
     )[0].effect;
 
     return (
-      <li className="list-group-item">
+      <li key={key} className="list-group-item">
         <div className="d-flex w-100 justify-content-start">
           <h5 className="h5">{name}</h5>
         </div>

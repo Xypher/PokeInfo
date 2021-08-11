@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import PokeCard from "../pokemon/PokeCard";
 import { connect } from "react-redux";
-import { specify } from "../../actions/pokemons";
+import { specify, savePrevState, erasePrevState } from "../../actions/pokemons";
 import PokeDeck from "../pokemon/PokeDeck";
+import { withRouter } from "react-router-dom";
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.queryPokemons = this.queryPokemons.bind(this);
+    this.saveState = this.saveState.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   state = {
@@ -17,6 +20,10 @@ class Main extends Component {
     pokeCards: [],
     limit: 8,
   };
+
+  saveState() {
+    this.props.savePrevState(this.state);
+  }
 
   queryPokemons() {
     const { pokemons } = this.props;
@@ -37,9 +44,41 @@ class Main extends Component {
 
   handleChange(event) {
     this.setState(
-      { [event.target.name]: event.target.value },
+      { [event.target.name]: event.target.value, limit: 8 },
       this.queryPokemons
     );
+  }
+
+  handleScroll() {
+    const windowHeight =
+      "innerHeight" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
+    const windowBottom = windowHeight + window.pageYOffset;
+    if (windowBottom >= docHeight) {
+      this.setState({ limit: this.state.limit + 8 }, this.queryPokemons);
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+    if (this.props.prevState) {
+      this.setState({ ...this.props.prevState });
+      this.props.erasePrevState();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   render() {
@@ -77,7 +116,7 @@ class Main extends Component {
             />
           </div>
         </form>
-        <PokeDeck pokeCards={pokeCards} />
+        <PokeDeck pokeCards={pokeCards} saveState={this.saveState} />
       </div>
     );
   }
@@ -86,6 +125,11 @@ class Main extends Component {
 const mapStateToProps = (state) => ({
   pokemonsLoading: state.pokemons.loading,
   pokemons: state.pokemons.pokemons,
+  prevState: state.pokemons.mainPrevState,
 });
 
-export default connect(mapStateToProps, { specify })(Main);
+export default connect(mapStateToProps, {
+  specify,
+  savePrevState,
+  erasePrevState,
+})(withRouter(Main));

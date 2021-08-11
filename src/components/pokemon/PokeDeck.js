@@ -4,9 +4,16 @@ import { Link } from "react-router-dom";
 import { specify } from "../../actions/pokemons";
 import { connect } from "react-redux";
 
-const PokeDeck = ({ pokeCards, specify }) => {
+const PokeDeck = ({ pokeCards, specify, saveState }) => {
   let cards = pokeCards.map((pokemon, key) => (
-    <Link key={key} to="details/" onClick={() => specify(pokemon)}>
+    <Link
+      key={key}
+      to={{ pathname: "details" }}
+      onClick={() => {
+        specify(pokemon);
+        saveState();
+      }}
+    >
       <PokeCard pokemon={pokemon} />
     </Link>
   ));

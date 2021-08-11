@@ -25,13 +25,16 @@ class Details extends Component {
 
   render() {
     const { abilities, loading } = this.state;
-    const { pokemonForDetails } = this.props;
+    const { pokemonForDetails, history } = this.props;
     if (loading) return <h1>loading...</h1>;
-    console.log(abilities);
+
     return (
       <div className="container">
         <div className="row mt-4 mb-4">
           <PokeCard pokemon={pokemonForDetails} />
+          <button className="btn btn-primary" onClick={history.goBack}>
+            Go Back
+          </button>
         </div>
         <div className="row">
           <PokeAbilities abilities={abilities} />

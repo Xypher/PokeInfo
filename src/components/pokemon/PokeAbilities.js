@@ -1,6 +1,6 @@
 import React from "react";
 
-const PokeAbilities = ({ abilities }) => {
+const PokeAbilities = ({ abilities, match, location, history }) => {
   //if no abilities are yet fetched return nothing
   if (!abilities) {
     return <div></div>;

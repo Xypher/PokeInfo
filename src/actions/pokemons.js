@@ -3,6 +3,8 @@ import {
   POKEMONS_LOADING,
   POKEMONS_LOADED,
   SPECIFY_POKEMON_DETAILS,
+  SAVE_MAIN_PREV_STATE,
+  ERASE_PREV_MAIN_STATE,
 } from "./actionTypes";
 
 export const load = () => async (dispatch) => {
@@ -23,5 +25,14 @@ export const load = () => async (dispatch) => {
   dispatch({ type: POKEMONS_LOADED, payload: pokemons });
 };
 
+/*specify pokemon for the details page*/
 export const specify = (pokemon) => (dispatch) =>
   dispatch({ type: SPECIFY_POKEMON_DETAILS, payload: pokemon });
+
+/*erase the Main page previous state*/
+export const erasePrevState = () => (dispatch) =>
+  dispatch({ type: ERASE_PREV_MAIN_STATE });
+
+/*save the Main page's previous state before routing to the details page*/
+export const savePrevState = (state) => (dispatch) =>
+  dispatch({ type: SAVE_MAIN_PREV_STATE, payload: state });

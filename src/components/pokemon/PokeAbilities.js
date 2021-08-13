@@ -1,21 +1,28 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const PokeAbilities = ({ abilities, match, location, history }) => {
   //if no abilities are yet fetched return nothing
   if (!abilities) {
     return <div></div>;
   }
+  //gets the english name of the ability
   const rows = abilities.map((ability, key) => {
-    const name = ability.names.filter((name) => name.language.name === "en")[0]
-      .name;
+    let name = ability.names.filter((name) => name.language.name === "en");
+    if (name.length === 0) return <Fragment />;
+    name = name[0].name;
 
-    const flavor = ability.flavor_text_entries.filter(
+    //gets the flavor_text of the ability
+    let flavor = ability.flavor_text_entries.filter(
       (effect) => effect.language.name === "en"
-    )[0].flavor_text;
+    );
+    if (flavor.length === 0) return <Fragment />;
+    flavor = flavor[0].flavor_text;
 
-    const effect = ability.effect_entries.filter(
+    let effect = ability.effect_entries.filter(
       (effect) => effect.language.name === "en"
-    )[0].effect;
+    );
+    if (effect.length === 0) return <Fragment />;
+    effect = effect[0].effect;
 
     return (
       <li key={key} className="list-group-item">

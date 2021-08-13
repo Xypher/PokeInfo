@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PokeCard from "../pokemon/PokeCard";
 import { connect } from "react-redux";
 import { specify, savePrevState, erasePrevState } from "../../actions/pokemons";
 import PokeDeck from "../pokemon/PokeDeck";
@@ -30,7 +29,7 @@ class Main extends Component {
     const { name, limit } = this.state;
 
     let pokeCards = pokemons.filter((pokemon) =>
-      pokemon.name.replace(/-/g, " ").startsWith(name.trim())
+      pokemon.name.replace(/-/g, " ").startsWith(name.toLowerCase().trim())
     );
     pokeCards = pokeCards.slice(0, Math.min(pokeCards.length, limit));
     this.setState({ queryLoading: false, pokeCards });
@@ -89,7 +88,7 @@ class Main extends Component {
       return (
         <div className="container">
           <div className="row mt-5">
-            <div className="col-12">
+            <div className="col-12 text-center">
               <div
                 className="spinner-border text-muted pokemon-deck-spinner"
                 role="status"

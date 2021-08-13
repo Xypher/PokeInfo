@@ -1,24 +1,24 @@
 import React from "react";
 
-const Stats = ({ pokemon: { stats } }) => {
+export const Stats = ({ pokemon: { stats } }) => {
   const stat_map = {
-    hp: "HP",
-    attack: "Attack",
-    defense: "Defense",
-    "special-attack": "SP. Atk.",
-    "special-defense": "SP. Def.",
-    speed: "Speed",
+    hp: "HP:",
+    attack: "Attack:",
+    defense: "Defense:",
+    "special-attack": "SP. Atk.:",
+    "special-defense": "SP. Def.:",
+    speed: "Speed:",
   };
 
   const bar_color = (value) => {
-    if (value < 60) return "bg-danger";
-    else if (value >= 60 && value < 90) return "bg-warning";
+    if (value < 70) return "bg-danger";
+    else if (value >= 70 && value < 100) return "bg-warning";
     else return "bg-success";
   };
   const stat_rows = stats.map(({ stat: { name }, base_stat }, key) => (
     <tr key={key} className="d-flex">
-      <td className="col-3">{stat_map[name]}</td>
-      <td className="col-3">{base_stat}</td>
+      <td className="col-4">{stat_map[name]}</td>
+      <td className="col-2">{base_stat}</td>
       <td className="col-6">
         <div className="progress">
           <div
@@ -26,8 +26,8 @@ const Stats = ({ pokemon: { stats } }) => {
             role="progressbar"
             aria-valuenow={`${base_stat}`}
             aria-valuemin="0"
-            aria-valuemax="160"
-            style={{ width: `${(base_stat / 160) * 100}%` }}
+            aria-valuemax="200"
+            style={{ width: `${(base_stat / 200) * 100}%` }}
           />
         </div>
       </td>
@@ -43,7 +43,7 @@ const Stats = ({ pokemon: { stats } }) => {
   );
 };
 
-const Charictaristics = ({
+export const Charictaristics = ({
   pokemon: { types, base_experience, weight, height },
 }) => {
   let types_content = "";
@@ -56,21 +56,21 @@ const Charictaristics = ({
     <table className="table table-borderless">
       <tbody>
         <tr>
-          <td>type: </td>
+          <td>{"Type:"} </td>
           <td>{types_content}</td>
         </tr>
         <tr>
-          <td>Base Experience:</td>
+          <td>{"Base Experience:"}</td>
           <td>{base_experience}</td>
         </tr>
 
         <tr>
-          <td>Height:</td>
+          <td>{"Height:"}</td>
           <td>{height}</td>
         </tr>
 
         <tr>
-          <td>Weight:</td>
+          <td>{"Weight:"}</td>
           <td>{weight}</td>
         </tr>
       </tbody>

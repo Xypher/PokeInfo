@@ -19,3 +19,8 @@ a:visited {
 a:active {
   text-decoration: none;
 }
+
+.fa-arrow-left,
+.fa-arrow-right {
+  color: black;
+}

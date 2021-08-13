@@ -24,7 +24,7 @@ const PokeDeck = ({ pokeCards, specify, saveState }) => {
           {cards.length === 0 ? (
             <div className="container">
               <div className="row mt-5">
-                <div className="col-12">
+                <div className="col-12 text-center">
                   <h1>No Results</h1>
                   <p className="text-muted">Check for misspelling errors.</p>
                 </div>

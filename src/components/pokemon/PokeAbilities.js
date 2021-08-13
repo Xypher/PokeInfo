@@ -18,6 +18,7 @@ const PokeAbilities = ({ abilities, match, location, history }) => {
     if (flavor.length === 0) return <Fragment />;
     flavor = flavor[0].flavor_text;
 
+    //gets the effect of the ability
     let effect = ability.effect_entries.filter(
       (effect) => effect.language.name === "en"
     );
@@ -35,6 +36,7 @@ const PokeAbilities = ({ abilities, match, location, history }) => {
     );
   });
 
+  // return a list of abilites to the details component
   return (
     <div className="container">
       <div className="list-group">{rows}</div>;

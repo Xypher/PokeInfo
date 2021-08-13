@@ -1,5 +1,6 @@
 import React from "react";
 
+//base stats of the pokemon
 export const Stats = ({ pokemon: { stats } }) => {
   const stat_map = {
     hp: "HP:",
@@ -43,6 +44,7 @@ export const Stats = ({ pokemon: { stats } }) => {
   );
 };
 
+//Charictaristics of the pokemon
 export const Charictaristics = ({
   pokemon: { types, base_experience, weight, height },
 }) => {

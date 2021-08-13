@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { specify } from "../../actions/pokemons";
 import { connect } from "react-redux";
 
+//component responsible for displaying pokemon cards provided from the main component
 const PokeDeck = ({ pokeCards, specify, saveState }) => {
   let cards = pokeCards.map((pokemon, key) => (
     <Link

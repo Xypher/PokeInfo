@@ -11,6 +11,7 @@ class Details extends Component {
     loading: true,
   };
 
+  //fetches abilites from the the API and put them in the state when this component mount
   async componentDidMount() {
     this.setState({ loading: true });
 
@@ -18,6 +19,8 @@ class Details extends Component {
     let abilities = await Promise.all(
       pokemonForDetails.abilities.map(({ ability }) => axios.get(ability.url))
     );
+
+    //get the data from the response
     abilities = abilities.map((ability) => ability.data);
 
     this.setState({ abilities, loading: false });
@@ -30,6 +33,9 @@ class Details extends Component {
 
     let images = [];
     let key = 0;
+
+    /*since the sprites are not an array  but an object
+    had to loop over them using a for in loob*/
     for (const sprite in pokemonForDetails.sprites) {
       if (typeof pokemonForDetails.sprites[sprite] !== "string") continue;
 
